@@ -1,0 +1,15 @@
+[
+    {
+        "page_label":"the new field",
+        "fields":[
+            {
+                "field_id": "english_name",
+                "field_label":"Name",
+                "field_mandatory":"yes",
+                "field_placeholder":"enter name",
+                "field_type":"text",
+                "field_value":""
+            }
+        ]
+    }
+]
