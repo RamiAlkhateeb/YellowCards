@@ -35,7 +35,7 @@ const (
 var client *mongo.Client
 
 type Config struct {
-
+	Models data.Models
 }
 
 func main() {
@@ -57,6 +57,16 @@ func main() {
 		}
 	} ()
 
+	app:= Config{
+		Models: data.New(client),
+}
+
+}
+
+func (app *Config) serve(){
+	srv := &http.Server{
+	Addr: fmt.Sprintf(":%s", webPort),
+}
 }
 
 func connectToMongo() (*mongo.Client, error) {
@@ -227,5 +237,84 @@ func (l *LogEntry) Update() (*mongo.UpdateResult, error) {
 	}
 
 	return result, nil
+}
+```
+
+And we create the routes file within api folder, and we install the package within logger-service \
+	> go get github.com/go-chi/chi/v5
+	> go get github.com/go-chi/chi/middleware
+	> go get github.com/go-chi/cors
+\
+
+In the routes file : 
+```
+package main
+
+import (
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+)
+
+func (app *Config) routes() http.Handler {
+	mux := chi.NewRouter()
+
+	// specify who is allowed to connect
+	mux.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"https://*", "http://*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders: []string{"Link"},
+		AllowCredentials: true,
+		MaxAge: 300,
+	}))
+
+	mux.Use(middleware.Heartbeat("/ping"))
+
+	mux.Post("/log", app.WriteLog)
+
+	return mux
+}
+```
+
+and will create handlers.go file
+```
+package main
+
+import (
+	"log-service/data"
+	"net/http"
+)
+
+type JSONPayload struct {
+	Name string `json:"name"`
+	Data string `json:"data"`
+}
+
+func (app *Config) WriteLog(w http.ResponseWriter, r *http.Request) {
+	// read json into var
+	var requestPayload JSONPayload
+	_ = app.readJSON(w, r, &requestPayload)
+
+	// insert data
+	event := data.LogEntry{
+		Name: requestPayload.Name,
+		Data: requestPayload.Data,
+	}
+
+	err := app.Models.LogEntry.Insert(event)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	resp := jsonResponse{
+		Error: false,
+		Message: "logged"
+	}
+
+	app.writeJSON(w, http.StatusAccepted, resp)
 }
 ```
