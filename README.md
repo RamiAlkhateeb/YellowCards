@@ -61,12 +61,20 @@ func main() {
 		Models: data.New(client),
 }
 
+	// start web server
+	go app.serve()
 }
 
 func (app *Config) serve(){
 	srv := &http.Server{
 	Addr: fmt.Sprintf(":%s", webPort),
+	Handler: app.routes(),
 }
+	err := srv.ListenAndServce()
+	if err != nil {
+		log.Panic(err)
+	}
+	
 }
 
 func connectToMongo() (*mongo.Client, error) {
@@ -278,7 +286,7 @@ func (app *Config) routes() http.Handler {
 	return mux
 }
 ```
-
+Will create a helpers file, same as usual \
 and will create handlers.go file
 ```
 package main
