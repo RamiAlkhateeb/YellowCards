@@ -11,8 +11,8 @@
       > go get go.mongodb.org/mongo-driver/mongo/options
 - In the api folder, create a file main.go and write the following in it:
 
-  ```
-  package main
+```
+package main
 
 import (
 	"context"
@@ -76,7 +76,7 @@ func connectToMongo() (*mongo.Client, error) {
 
 	return c, nil
 }
-  ```
+```
 
 - Create a file within the data folder called models.go
 
