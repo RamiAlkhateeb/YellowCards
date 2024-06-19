@@ -6,8 +6,8 @@
 - Within the terminal go to logger-service folder and run : \
       > go mod init logger-service
 - In the logger-service folder, create a new folder cmd/api, and data folder
-- Then in terminal while being in logger-service folder, add the following packages
-      > go get go.mongodb.org/mongo-driver/mongo
+- Then in terminal while being in logger-service folder, add the following packages \
+      > go get go.mongodb.org/mongo-driver/mongo \
       > go get go.mongodb.org/mongo-driver/mongo/options
 - In the api folder, create a file main.go and write the following in it:
   ```
