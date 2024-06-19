@@ -249,8 +249,8 @@ func (l *LogEntry) Update() (*mongo.UpdateResult, error) {
 ```
 
 And we create the routes file within api folder, and we install the package within logger-service \
-	> go get github.com/go-chi/chi/v5
-	> go get github.com/go-chi/chi/middleware
+	> go get github.com/go-chi/chi/v5 \
+	> go get github.com/go-chi/chi/middleware \
 	> go get github.com/go-chi/cors
 \
 
