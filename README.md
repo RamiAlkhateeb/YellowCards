@@ -20,3 +20,4 @@
 - Install > go get github.com/xhit/go-simple-mail/v2
 - After writing the code of mail.go, will create a folder within mail-service called templates
 - Inside templates folder will create file mail.html.gohtml, and mail.plain.gohtml
+- Then will do the docker file, and then add the mail-service to docker-compose
