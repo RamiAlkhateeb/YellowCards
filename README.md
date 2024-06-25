@@ -9,7 +9,7 @@
 - In the mail-service folder, create a new folder cmd/api, and data folder
 - In the api folder, create a file main.go
 - Copy helpers and routes files to api folder
-- Install the package within mail-service \
+- Install the package within mail-service 
 	> go get github.com/go-chi/chi/v5 \
 	> go get github.com/go-chi/chi/middleware \
 	> go get github.com/go-chi/cors
